@@ -1,0 +1,33 @@
+{
+  "name": "gulp-vue",
+  "version": "1.0.0",
+  "description": "Fast and uncomplicated .vue file compiler for Gulp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wearespindle/gulp-vue.git"
+  },
+  "keywords": [
+    "vue"
+  ],
+  "author": "Devhouse Spindle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wearespindle/gulp-vue/issues"
+  },
+  "homepage": "https://github.com/wearespindle/gulp-vue#readme",
+  "dependencies": {
+    "vue-template-compiler": "^2.2.6",
+    "concat-with-sourcemaps": "^0.1.6",
+    "event-stream": "^3.1.7",
+    "gulp-concat-util": "^0.5.1",
+    "gulp-util": "^3.0.2",
+    "lodash": "^2.4.1",
+    "lodash.assign": "^2.4.1",
+    "lodash.bind": "^2.4.1",
+    "through2": "^0.6.3"
+  }
+}
