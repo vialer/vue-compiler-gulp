@@ -1,6 +1,6 @@
 {
   "name": "gulp-vuejs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Fast and uncomplicated .vue file compiler for Gulp.",
   "main": "index.js",
   "scripts": {
