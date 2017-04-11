@@ -54,7 +54,7 @@ function gulpVue(name, config) {
             let templateName = `${templatePrefix.join('_')}_${baseName}`
             let compiled = compiler.compile(templateData, options.vue)
 
-            compiled.errors.forEach(function(msg) {
+            compiled.errors.forEach((msg) => {
                 this.emit('error', new Error(msg))
             })
 
