@@ -7,11 +7,11 @@ const extend = require('lodash.assign')
 const os = require('os')
 const path = require('path')
 const through = require('through2')
-
-var transpile = require('vue-template-es2015-compiler')
+const transpile = require('vue-template-es2015-compiler')
 
 let defaults = {
     sep: os.EOL,
+    es2015: true,
     namespace: 'window.templates',
     extension: '.vue',
     prefixStart: '',
@@ -21,15 +21,25 @@ let defaults = {
     },
 }
 
-function toFunction(code) {
-    return transpile('function render() {' + code + '}')
-}
-
 
 function gulpVue(name, config) {
     let options = extend({}, defaults, config || {})
+
+    /**
+     * Adds a render function to the render output code.
+     * When the es2015 option is set, it will produce cleaner
+     * output that can be used with `is strict`.
+     * @param {String} code - The compiled code.
+     * @returns {String} - The final javascript template code.
+     */
+    function toFunction(code) {
+        let output = `function render(){${code}}`
+        if (options.es2015) return transpile(output)
+        return output
+    }
+
     let concat, fileName, firstFile
-    let templateNamespace = `${options.namespace} = {}`
+    let templateNamespace = `${options.namespace}={}`
 
     function combineFiles(file, encoding, next) {
         if (!firstFile) {
@@ -58,7 +68,13 @@ function gulpVue(name, config) {
                 this.emit('error', new Error(msg))
             })
 
-            let jsTemplate = `${options.namespace}.${templateName}={render: ${toFunction(compiled.render)}, staticRenderFns: [${compiled.staticRenderFns.map(toFunction).join(',')}]}`
+            let jsTemplate = `${options.namespace}.${templateName}={render:${toFunction(compiled.render, options)}`
+            if (compiled.staticRenderFns.length) {
+                jsTemplate += `,staticRenderFns:[${compiled.staticRenderFns.map(toFunction).join(',')}]}`
+            } else {
+                jsTemplate += '}'
+            }
+
             concat.add(file.relative, jsTemplate, file.sourceMap)
         } catch (_error) {
             this.emit('error', new Error(_error))
