@@ -14,6 +14,7 @@ let defaults = {
     es2015: true,
     namespace: 'window.templates',
     extension: '.vue',
+    commonjs: false,
     prefixStart: '',
     prefixIgnore: [],
     vue: {
@@ -33,13 +34,16 @@ function gulpVue(name, config) {
      * @returns {String} - The final javascript template code.
      */
     function toFunction(code) {
-        let output = `function render(){${code}}`
+        let output = `function r(){${code}}`
         if (options.es2015) return transpile(output)
         return output
     }
 
-    let concat, fileName, firstFile
-    let templateNamespace = `${options.namespace}={}`
+    let concat, fileName, firstFile, templateNamespace
+
+    if (options.commonjs) {
+        templateNamespace = ''
+    } else templateNamespace = `${options.namespace}={}`
 
     function combineFiles(file, encoding, next) {
         if (!firstFile) {
@@ -50,7 +54,8 @@ function gulpVue(name, config) {
             concat.add(file.relative, templateNamespace, file.sourceMap)
         }
 
-        let baseName = path.basename(file.path, options.extension)
+        // Replace hyphens with underscores in order to keep dot-notation.
+        let baseName = path.basename(file.path, options.extension).replace('-', '_')
         let templateData = file.contents.toString('utf8')
 
         try {
@@ -58,9 +63,11 @@ function gulpVue(name, config) {
             let pathPrefixIndex = _path.indexOf(options.prefixStart)
             if (pathPrefixIndex === -1) throw 'Cannot find prefix start!'
             let templatePrefix = _path.slice(pathPrefixIndex + 1, _path.length - 1)
+            // Ignore path components from prefixIgnore.
             templatePrefix = templatePrefix.filter((i) => {
                 return !options.prefixIgnore.includes(i)
             })
+
             let templateName = `${templatePrefix.join('_')}_${baseName}`
             let compiled = compiler.compile(templateData, options.vue)
 
@@ -68,11 +75,20 @@ function gulpVue(name, config) {
                 this.emit('error', new Error(msg))
             })
 
-            let jsTemplate = `${options.namespace}.${templateName}={render:${toFunction(compiled.render, options)}`
-            if (compiled.staticRenderFns.length) {
-                jsTemplate += `,staticRenderFns:[${compiled.staticRenderFns.map(toFunction).join(',')}]}`
+            // Generate a javascript file for direct usage in the browser,
+            // using a global namespace.
+            let jsTemplate
+            if (options.commonjs) {
+                jsTemplate = `module.exports.${templateName}={render:${toFunction(compiled.render, options)}`
+                if (compiled.staticRenderFns.length) {
+                    jsTemplate += `,staticRenderFns:[${compiled.staticRenderFns.map(toFunction).join(',')}]}`
+                } else jsTemplate += '}'
             } else {
-                jsTemplate += '}'
+                // Generate a commonjs module.
+                jsTemplate = `${options.namespace}.${templateName}={r:${toFunction(compiled.render, options)}`
+                if (compiled.staticRenderFns.length) {
+                    jsTemplate += `,s:[${compiled.staticRenderFns.map(toFunction).join(',')}]}`
+                } else jsTemplate += '}'
             }
 
             concat.add(file.relative, jsTemplate, file.sourceMap)
