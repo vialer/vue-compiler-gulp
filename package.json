@@ -13,6 +13,11 @@
   "keywords": [
     "vue"
   ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "index.js",
+  ],
   "author": "Devhouse Spindle",
   "license": "MIT",
   "bugs": {
