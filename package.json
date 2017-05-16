@@ -1,6 +1,6 @@
 {
   "name": "gulp-vuejs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Fast and uncomplicated .vue file compiler for Gulp.",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "index.js",
+    "index.js"
   ],
   "author": "Devhouse Spindle",
   "license": "MIT",
