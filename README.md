@@ -6,7 +6,7 @@ template app structure. Intentionally no inline stylesheets and javascript.
 # Install and usage
 Install like:
 
-    npm install gulp-vue --save-dev
+    npm install gulp-vuejs --save-dev
 
 Make a templates directory and optionally subdirectories to use template
 prefixes, e.g. `templates/mymodule`:
