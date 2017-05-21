@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wearespindle/gulp-vue.git"
+    "url": "git+https://github.com/wearespindle/gulp-fuet.git"
   },
   "keywords": [
     "vue"
@@ -21,18 +21,14 @@
   "author": "Devhouse Spindle",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wearespindle/gulp-vue/issues"
+    "url": "https://github.com/wearespindle/gulp-fuet/issues"
   },
-  "homepage": "https://github.com/wearespindle/gulp-vue#readme",
+  "homepage": "https://github.com/wearespindle/gulp-fuet#readme",
   "dependencies": {
-    "vue-template-compiler": "^2.2.6",
-    "concat-with-sourcemaps": "^0.1.6",
     "event-stream": "^3.1.7",
+    "fuet": "^1.0.2",
     "gulp-concat-util": "^0.5.1",
     "gulp-util": "^3.0.2",
-    "lodash": "^2.4.1",
-    "lodash.assign": "^2.4.1",
-    "lodash.bind": "^2.4.1",
     "through2": "^0.6.3"
   }
 }

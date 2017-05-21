@@ -10,7 +10,7 @@ const PLUGIN_NAME = 'gulp-fuet'
 let defaults = {
     namespace: 'window.templates',
     commonjs: false,
-    skip: [],
+    pathfilter: [],
     vue: {
         preserveWhitespace: false,
     },
