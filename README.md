@@ -1,39 +1,49 @@
-# gulp-vue
-Simple and fast .vue template compiler for Gulp. Compiles all templates to an
-object. Template namespace is configurable and filled dynamically based on your
-template app structure. Intentionally no inline stylesheets and javascript.
+# gulp-fuet
+Thin wrapper around [fuet](https://github.com/wearespindle/fuet), which is a simple and fast .vue template compiler for Gulp. It compiles all templates in a project to a javascript object. Each template in the object has an r and s property. Vue components are able to use them like this:
+
+    Vue.component('MyComponent', {
+        render: template.r,
+        staticRenderFns: template.s,
+        ...
+    })
+
+
+The template namespace is configurable. Template names are generated according
+to their relative path. You can also use the `commonjs` option to generate a
+commonjs template module. This can be used to require the templates in your code,
+in case you want to keep the templates within a closure and part of an existing
+browserify entry. Inline stylesheets and javascript support is left
+out intentionally, due to separation of concerns.
 
 # Install and usage
-Install like:
+Installation is simple. Just include it with npm:
 
-    npm install gulp-vuejs --save-dev
+    npm install gulp-fuet --save-dev
 
 Make a templates directory and optionally subdirectories to use template
 prefixes, e.g. `templates/mymodule`:
 Then use it in your gulp file like:
 
-    const vue = require('gulp-vue')
+    const fuet = require('gulp-fuet')
+
+    ...
 
     gulp.task('templates', 'Build Vue templates', () => {
         gulp.src('./src/templates/**/*.vue')
-        .pipe(vue('templates.js', {
-            prefixStart: 'templates',
-            commonjs: false,
+        .pipe(fuet({
+            pathfilter: ['src', 'templates'],
         }))
         .on('error', notify.onError('Error: <%= error.message %>'))
         .pipe(ifElse(PRODUCTION, () => uglify()))
         .on('end', () => {
             if (!PRODUCTION) del(path.join(BUILD_DIR, 'templates.js.gz'), {force: true})
         })
+        .pipe(concat('templates.js'))
+        .pipe(insert.prepend('window.templates={};'))
         .pipe(gulp.dest(BUILD_DIR))
         .pipe(size(extend({title: 'templates'}, sizeConfig)))
         .pipe(ifElse(PRODUCTION, () => gzip(gzipConfig)))
         .pipe(ifElse(PRODUCTION, () => gulp.dest(BUILD_DIR)))
-        .pipe(size(extend({title: 'templates [gzip]'}, sizeConfig)))
+        .pipe(ifElse(PRODUCTION, () => size(extend({title: 'templates[gzip]'}, sizeConfig))))
         .pipe(ifElse(isWatching, livereload))
     })
-
-This will generate a Javascript file, where templates are accessible from
-`window.templates`. You can optionally use the `commonjs` option to generate a
-module, which you can require in your code if you want to keep the templates
-within a predefined namespace and part of an existing browserify entry.
