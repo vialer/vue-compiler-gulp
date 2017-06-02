@@ -1,7 +1,8 @@
+'use strict'
+
 const through = require('through2')
 const Fuet = require('fuet')
 const gutil = require('gulp-util')
-const path = require('path')
 
 const PluginError = gutil.PluginError
 
@@ -22,11 +23,13 @@ function gulpFuet(options) {
 
     return through.obj(function(file, encode, callback) {
         if (file.isNull()) {
-            return callback(null, file)
+            callback(null, file)
+            return
         }
         if (file.isStream()) {
             this.emit('error', new PluginError(PLUGIN_NAME, 'Streams are not supported'))
-            return callback()
+            callback()
+            return
         }
 
         let target = file.path.replace(`${process.cwd()}/`, '')
@@ -34,6 +37,9 @@ function gulpFuet(options) {
             file.path = gutil.replaceExtension(file.path, '.js')
             file.contents = new Buffer(result.data)
             callback(null, file)
+        })
+        .catch((err) => {
+            this.emit('error', new PluginError(PLUGIN_NAME, err))
         })
     })
 }
