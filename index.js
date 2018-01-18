@@ -1,5 +1,3 @@
-'use strict'
-
 const through = require('through2')
 const Fuet = require('fuet')
 const gutil = require('gulp-util')
@@ -8,18 +6,19 @@ const PluginError = gutil.PluginError
 
 const PLUGIN_NAME = 'gulp-fuet'
 
-let defaults = {
-    namespace: 'window.templates',
-    commonjs: false,
-    pathfilter: [],
-    vue: {
-        preserveWhitespace: false,
-    },
-}
 
 function gulpFuet(options) {
+    let defaults = {
+        namespace: 'window.templates',
+        commonjs: false,
+        pathfilter: [],
+        vue: {
+            preserveWhitespace: false,
+        },
+    }
+
     options = Object.assign(defaults, options)
-    const fuet = new Fuet(options)
+    const fuet = new Fuet(Object.assign(defaults, options))
 
     return through.obj(function(file, encode, callback) {
         if (file.isNull()) {
@@ -39,7 +38,7 @@ function gulpFuet(options) {
             callback(null, file)
         })
         .catch((err) => {
-            this.emit('error', new PluginError(PLUGIN_NAME, err))
+            this.emit('error', new PluginError(PLUGIN_NAME, `${target}: ${err}`))
         })
     })
 }

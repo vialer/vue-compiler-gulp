@@ -1,10 +1,12 @@
 {
-    "ecmaFeatures": {
-        "arrowFunctions":true,
-        "classes":true,
-        "spread":true
-    },
     "parser": "espree",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "modules": true
+        },
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
     "env": {
         "amd": false,
         "browser": true,
@@ -13,7 +15,17 @@
     },
     "globals": {
         "Vue": true,
-        "VueRouter": true
+        "VueRouter": true,
+        "Vuex": true,
+        "templates": true,
+        "axios": true,
+        "csrf": true,
+        "Vuelidate": true,
+        "i18n": true,
+        "I18nStore": true,
+        "translations": true,
+        "__state": true,
+        "_Vuex"
     },
     "plugins": [
 
@@ -148,7 +160,7 @@
         "key-spacing": [2, { "beforeColon": false, "afterColon": true }],
         "lines-around-comment": 0,
         "max-depth": [0, 4],
-        "max-len": [0, 80, 4],
+        "max-len": [1, {"code": 120, "tabWidth": 4, "comments": 80}],
         "max-nested-callbacks": [0, 2],
         "max-params": [0, 3],
         "max-statements": [0, 10],
@@ -178,7 +190,12 @@
         "spaced-line-comment": [0, "always"],
         "strict": [2, "global"],
         "use-isnan": 2,
-        "valid-jsdoc": 0,
+        "valid-jsdoc": [2, {
+            "prefer": {
+                "return": "returns"
+            },
+             "requireReturn": false
+        }],
         "valid-typeof": 2,
         "vars-on-top": 0,
         "wrap-iife": 0,
