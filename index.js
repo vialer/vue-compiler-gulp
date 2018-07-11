@@ -34,7 +34,7 @@ function gulpFuet(options) {
         let target = file.path.replace(`${process.cwd()}/`, '')
         fuet.processFile(file.contents.toString(), target).then((result) => {
             file.path = gutil.replaceExtension(file.path, '.js')
-            file.contents = new Buffer(result.data)
+            file.contents = Buffer.from(result.data)
             callback(null, file)
         })
         .catch((err) => {
