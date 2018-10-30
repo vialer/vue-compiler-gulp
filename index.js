@@ -1,13 +1,13 @@
 const through = require('through2')
-const Fuet = require('fuet')
+const VueCompiler = require('@vialer/vue-compiler')
 const gutil = require('gulp-util')
 
 const PluginError = gutil.PluginError
 
-const PLUGIN_NAME = 'gulp-fuet'
+const PLUGIN_NAME = 'vue-compiler-gulp'
 
 
-function gulpFuet(options) {
+function vueCompilerGulp(options) {
     let defaults = {
         namespace: 'window.templates',
         commonjs: false,
@@ -18,7 +18,7 @@ function gulpFuet(options) {
     }
 
     options = Object.assign(defaults, options)
-    const fuet = new Fuet(Object.assign(defaults, options))
+    const vueCompiler = new VueCompiler(Object.assign(defaults, options))
 
     return through.obj(function(file, encode, callback) {
         if (file.isNull()) {
@@ -32,7 +32,7 @@ function gulpFuet(options) {
         }
 
         let target = file.path.replace(`${process.cwd()}/`, '')
-        fuet.processFile(file.contents.toString(), target).then((result) => {
+        vueCompiler.processFile(file.contents.toString(), target).then((result) => {
             file.path = gutil.replaceExtension(file.path, '.js')
             file.contents = Buffer.from(result.data)
             callback(null, file)
@@ -43,4 +43,4 @@ function gulpFuet(options) {
     })
 }
 
-module.exports = gulpFuet
+module.exports = vueCompilerGulp

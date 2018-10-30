@@ -1,14 +1,14 @@
 {
-  "name": "gulp-fuet",
-  "version": "1.0.14",
-  "description": "Fast and uncomplicated .vue file compiler for Gulp.",
+  "name": "@vialer/vue-compiler-gulp",
+  "version": "1.0.0",
+  "description": "Small Gulp wrapper around vue-compiler.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wearespindle/gulp-fuet.git"
+    "url": "git+https://github.com/vialer/vue-compiler-gulp.git"
   },
   "keywords": [
     "vue"
@@ -18,15 +18,15 @@
     "README.md",
     "index.js"
   ],
-  "author": "Devhouse Spindle",
+  "author": "Windshaft B.V.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wearespindle/gulp-fuet/issues"
+    "url": "https://github.com/vialer/vue-compiler-gulp/issues"
   },
-  "homepage": "https://github.com/wearespindle/gulp-fuet#readme",
+  "homepage": "https://github.com/vialer/vue-compiler-gulp#readme",
   "dependencies": {
+    "@vialer/vue-compiler": "1.0.x",
     "event-stream": "3.1.x",
-    "fuet": "1.0.x",
     "gulp-concat-util": "0.5.x",
     "gulp-util": "3.0.x",
     "through2": "0.6.x"
