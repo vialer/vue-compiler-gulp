@@ -1,6 +1,6 @@
 {
   "name": "@vialer/vue-compiler-gulp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Small Gulp wrapper around vue-compiler.",
   "main": "index.js",
   "scripts": {
