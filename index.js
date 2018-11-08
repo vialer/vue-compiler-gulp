@@ -1,8 +1,8 @@
 const through = require('through2')
-const VueCompiler = require('@vialer/vue-compiler')
-const gutil = require('gulp-util')
+const PluginError = require('plugin-error')
+const replaceExt = require('replace-ext')
 
-const PluginError = gutil.PluginError
+const VueCompiler = require('@vialer/vue-compiler')
 
 const PLUGIN_NAME = 'vue-compiler-gulp'
 
@@ -33,7 +33,7 @@ function vueCompilerGulp(options) {
 
         let target = file.path.replace(`${process.cwd()}/`, '')
         vueCompiler.processFile(file.contents.toString(), target).then((result) => {
-            file.path = gutil.replaceExtension(file.path, '.js')
+            file.path = replaceExt(file.path, '.js')
             file.contents = Buffer.from(result.data)
             callback(null, file)
         })
